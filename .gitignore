@@ -1,5 +1,10 @@
 # Project exclude paths
 /cmake-build-debug/
 /cmake-build-release/
-/learn_3dzavr
+/learn_3dzavr.exe
 /engine_log.txt
+/build
+/.vs
+/.idea
+/.vscode
+/Debug
