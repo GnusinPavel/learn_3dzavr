@@ -2,6 +2,8 @@
 /cmake-build-debug/
 /cmake-build-release/
 /learn_3dzavr.exe
+/learn_3dzavr
+/compile_commands.json
 /engine_log.txt
 /build
 /.vs

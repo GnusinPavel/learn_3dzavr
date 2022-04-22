@@ -16,7 +16,7 @@ Vec4D::Vec4D(double x, double y, double z, double w) {
     _arr_point[3] = w;
 }
 
-Vec4D::Vec4D(const Vec4D &point4D) {
+Vec4D::Vec4D(const Vec4D& point4D) {
     _arr_point[0] = point4D.x();
     _arr_point[1] = point4D.y();
     _arr_point[2] = point4D.z();
@@ -24,55 +24,53 @@ Vec4D::Vec4D(const Vec4D &point4D) {
 }
 
 [[nodiscard]] Vec4D Vec4D::operator-() const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    return Vec4D(-x(), -y(), -z(), -w());
 }
 
-bool Vec4D::operator==(const Vec4D &point4D) const {
-    // TODO: implement (lesson 1)
-    return true;
+bool Vec4D::operator==(const Vec4D& point4D) const {
+    Vec4D diff = *this - point4D;
+    return diff.sqrAbs() < Consts::EPS;
 }
 
-bool Vec4D::operator!=(const Vec4D &point4D) const {
-    // TODO: implement (lesson 1)
-    return true;
+bool Vec4D::operator!=(const Vec4D& point4D) const {
+    return !(*this == point4D);
 }
 
 // Operations with Vec4D
-Vec4D Vec4D::operator+(const Vec4D &point4D) const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+Vec4D Vec4D::operator+(const Vec4D& point4D) const {
+    return Vec4D(x() + point4D.x(), y() + point4D.y(), z() + point4D.z(), w() + point4D.w());
 }
 
-Vec4D Vec4D::operator-(const Vec4D &point4D) const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+Vec4D Vec4D::operator-(const Vec4D& point4D) const {
+    return Vec4D(x() - point4D.x(), y() - point4D.y(), z() - point4D.z(), w() - point4D.w());
 }
 
 Vec4D Vec4D::operator*(double number) const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    return Vec4D(x() * number, y() * number, z() * number, w() * number);
 }
 
 Vec4D Vec4D::operator/(double number) const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    if (number > Consts::EPS) {
+        return Vec4D(x() / number, y() / number, z() / number, w() / number);
+    }
+    throw std::domain_error("Vec4D operator/(double): division by zero");
 }
 
 // Other useful methods
 double Vec4D::sqrAbs() const {
-    // TODO: implement (lesson 1)
-    return 1;
+    return x() * x() + y() * y() + z() * z() + w() * w();
 }
 
 double Vec4D::abs() const {
-    // TODO: implement (lesson 1)
-    return 1;
+    return std::sqrt(sqrAbs());
 }
 
 Vec4D Vec4D::normalized() const {
-    // TODO: implement (lesson 1)
-    return Vec4D();
+    double vecAbs = abs();
+    if (vecAbs > Consts::EPS) {
+        return Vec4D(*this / vecAbs);
+    }
+    return Vec4D(0);
 }
 
 bool Vec4D::isNear(double a, double b) {
@@ -89,7 +87,7 @@ void Vec4D::test() {
 
     // testing assigment operator (=):
     c = b;
-    assert(isNear(c.x(), 3) && isNear(c.y(), 4) && isNear(c.z(), 5)  && isNear(c.w(), 6));
+    assert(isNear(c.x(), 3) && isNear(c.y(), 4) && isNear(c.z(), 5) && isNear(c.w(), 6));
 
     // testing .x() & .y() & .z() & .w() methods:
     assert(isNear(a.x(), 1) && isNear(a.y(), 2) && isNear(a.z(), 3) && isNear(a.w(), 4));
@@ -106,7 +104,7 @@ void Vec4D::test() {
     Vec4D summ = a + b;
     assert(isNear(summ.x(), 4) && isNear(summ.y(), 6) && isNear(summ.z(), 8) && isNear(summ.w(), 10));
     Vec4D diff = a - b;
-    assert(isNear(diff.x(), -2) && isNear(diff.y(), -2)  && isNear(diff.z(), -2) && isNear(diff.w(), -2));
+    assert(isNear(diff.x(), -2) && isNear(diff.y(), -2) && isNear(diff.z(), -2) && isNear(diff.w(), -2));
 
     // testing scaling operators:
     Vec4D scale1 = a * 2;
