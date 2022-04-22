@@ -9,13 +9,13 @@
 #include "Vec3D.h"
 #include "Consts.h"
 
-Vec3D::Vec3D(const Vec3D &vec) {
+Vec3D::Vec3D(const Vec3D& vec) {
     _arr_point[0] = vec.x();
     _arr_point[1] = vec.y();
     _arr_point[2] = vec.z();
 }
 
-Vec3D::Vec3D(const Vec4D &point4D) {
+Vec3D::Vec3D(const Vec4D& point4D) {
     _arr_point[0] = point4D.x();
     _arr_point[1] = point4D.y();
     _arr_point[2] = point4D.z();
@@ -28,65 +28,65 @@ Vec3D::Vec3D(double x, double y, double z) {
 }
 
 Vec3D Vec3D::operator-() const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    return Vec3D(-x(), -y(), -z());
 }
 
-bool Vec3D::operator==(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return true;
+bool Vec3D::operator==(const Vec3D& vec) const {
+    Vec3D diff = *this - vec;
+    return diff.sqrAbs() < Consts::EPS;
 }
 
-bool Vec3D::operator!=(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return true;
+bool Vec3D::operator!=(const Vec3D& vec) const {
+    return !(*this == vec);
 }
 
 // Operations with Vec3D
-Vec3D Vec3D::operator+(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+Vec3D Vec3D::operator+(const Vec3D& vec) const {
+    return Vec3D(x() + vec.x(), y() + vec.y(), z() + vec.z());
 }
 
-Vec3D Vec3D::operator-(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+Vec3D Vec3D::operator-(const Vec3D& vec) const {
+    return Vec3D(x() - vec.x(), y() - vec.y(), z() - vec.z());
 }
 
 Vec3D Vec3D::operator*(double number) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    return Vec3D(x() * number, y() * number, z() * number);
 }
 
 Vec3D Vec3D::operator/(double number) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    if (number > Consts::EPS) {
+        return Vec3D(x() / number, y() / number, z() / number);
+    }
+    throw std::domain_error("Vec3D::operator/(double): division by zero");
 }
 
 // Other useful methods
 double Vec3D::sqrAbs() const {
-    // TODO: implement (lesson 1)
-    return 1;
+    return x() * x() + y() * y() + z() * z();
 }
 
 double Vec3D::abs() const {
-    // TODO: implement (lesson 1)
-    return 1;
+    return std::sqrt(sqrAbs());
 }
 
 Vec3D Vec3D::normalized() const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+    double vecAbs = abs();
+    if (vecAbs > Consts::EPS) {
+        return Vec3D(*this / vecAbs);
+    }
+    throw Vec3D(0);
 }
 
-double Vec3D::dot(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return 0;
+double Vec3D::dot(const Vec3D& vec) const {
+    return x() * vec.x() + y() * vec.y() + z() * vec.z();
 }
 
-Vec3D Vec3D::cross(const Vec3D &vec) const {
-    // TODO: implement (lesson 1)
-    return Vec3D();
+Vec3D Vec3D::cross(const Vec3D& vec) const {
+    return Vec3D(
+        y() * vec.z() - vec.y() * z(),
+        z() * vec.x() - vec.z() * x(),
+        x() * vec.y() - vec.x() * y()
+    );
 }
 
 Vec4D Vec3D::makePoint4D() const {
@@ -94,7 +94,7 @@ Vec4D Vec3D::makePoint4D() const {
 }
 
 Vec3D Vec3D::Random() {
-    return Vec3D((double) rand() / RAND_MAX, (double) rand() / RAND_MAX, (double) rand() / RAND_MAX);
+    return Vec3D((double)rand() / RAND_MAX, (double)rand() / RAND_MAX, (double)rand() / RAND_MAX);
 }
 
 bool Vec3D::isNear(double a, double b) {
@@ -128,7 +128,7 @@ void Vec3D::test() {
     Vec3D summ = a + b;
     assert(isNear(summ.x(), 4) && isNear(summ.y(), 6) && isNear(summ.z(), 8));
     Vec3D diff = a - b;
-    assert(isNear(diff.x(), -2) && isNear(diff.y(), -2)  && isNear(diff.z(), -2));
+    assert(isNear(diff.x(), -2) && isNear(diff.y(), -2) && isNear(diff.z(), -2));
 
     // testing scaling operators:
     Vec3D scale1 = a * 2;
