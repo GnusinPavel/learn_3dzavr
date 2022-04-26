@@ -174,11 +174,11 @@ Matrix4x4 Matrix4x4::Rotation(const Vec3D& v, double rv) {
 Matrix4x4 Matrix4x4::Projection(double fov, double aspect, double ZNear, double ZFar) {
     Matrix4x4 p{};
 
-    p._arr[0][0] = 1 / (tan(M_PI * fov * 0.5 / 180) * aspect);
-    p._arr[1][1] = 1 / tan(M_PI * fov * 0.5 / 180);
+    p._arr[0][0] = 1.0 / (tan(M_PI * fov * 0.5 / 180) * aspect);
+    p._arr[1][1] = 1.0 / tan(M_PI * fov * 0.5 / 180);
     p._arr[2][2] = ZFar / (ZFar - ZNear);
     p._arr[2][3] = -ZFar * ZNear / (ZFar - ZNear);
-    p._arr[3][2] = 1;
+    p._arr[3][2] = 1.0;
 
     return p;
 }
@@ -192,9 +192,9 @@ Matrix4x4 Matrix4x4::ScreenSpace(int width, int height) {
     s._arr[0][3] = 0.5 * width;
     s._arr[1][3] = 0.5 * height;
 
-    s._arr[2][2] = 1;
-    s._arr[3][3] = 1;
-    
+    s._arr[2][2] = 1.0;
+    s._arr[3][3] = 1.0;
+
     return s;
 }
 

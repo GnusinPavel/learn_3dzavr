@@ -29,8 +29,7 @@ std::vector<Triangle> Camera::project(std::shared_ptr<Mesh> mesh) {
         Triangle projected_normlized = Triangle(
             projected[0] / projected[0].w(),
             projected[1] / projected[1].w(),
-            projected[1] / projected[1].w(),
-            t.color()
+            projected[2] / projected[2].w()
         );
 
         _triangles.emplace_back(projected_normlized);
