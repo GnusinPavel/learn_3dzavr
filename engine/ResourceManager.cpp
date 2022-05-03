@@ -10,7 +10,7 @@
 #include "ResourceManager.h"
 #include "utils/Log.h"
 
-ResourceManager *ResourceManager::_instance = nullptr;
+ResourceManager* ResourceManager::_instance = nullptr;
 
 void ResourceManager::init() {
     delete _instance;
@@ -19,7 +19,7 @@ void ResourceManager::init() {
     Log::log("ResourceManager::init(): resource manager was initialized");
 }
 
-std::shared_ptr<sf::Texture> ResourceManager::loadTexture(const std::string &filename) {
+std::shared_ptr<sf::Texture> ResourceManager::loadTexture(const std::string& filename) {
     if (_instance == nullptr) {
         return nullptr;
     }
@@ -46,7 +46,7 @@ std::shared_ptr<sf::Texture> ResourceManager::loadTexture(const std::string &fil
     return texture;
 }
 
-std::shared_ptr<sf::SoundBuffer> ResourceManager::loadSoundBuffer(const std::string &filename) {
+std::shared_ptr<sf::SoundBuffer> ResourceManager::loadSoundBuffer(const std::string& filename) {
     if (_instance == nullptr) {
         return nullptr;
     }
@@ -72,7 +72,7 @@ std::shared_ptr<sf::SoundBuffer> ResourceManager::loadSoundBuffer(const std::str
     return soundBuffer;
 }
 
-std::shared_ptr<sf::Font> ResourceManager::loadFont(const std::string &filename) {
+std::shared_ptr<sf::Font> ResourceManager::loadFont(const std::string& filename) {
     if (_instance == nullptr) {
         return nullptr;
     }
@@ -98,7 +98,7 @@ std::shared_ptr<sf::Font> ResourceManager::loadFont(const std::string &filename)
     return font;
 }
 
-std::vector<std::shared_ptr<Mesh>> ResourceManager::loadObjects(const std::string &filename) {
+std::vector<std::shared_ptr<Mesh>> ResourceManager::loadObjects(const std::string& filename) {
 
     std::vector<std::shared_ptr<Mesh>> objects{};
     std::map<std::string, sf::Color> maters{};
@@ -132,19 +132,34 @@ std::vector<std::shared_ptr<Mesh>> ResourceManager::loadObjects(const std::strin
 
         char junk;
         if (line[0] == 'm') {
-            // TODO: implement (lesson 3)
+            int color[4];
+            std::string matName;
+
+            s >> junk >> matName >> color[0] >> color[1] >> color[2] >> color[3];
+            maters.insert({ matName, sf::Color(color[0], color[1], color[2], color[3]) });
         }
         if (line[0] == 'v') {
-            // TODO: implement (lesson 3)
+            double x, y, z;
+            s >> junk >> x >> y >> z;
+            verts.emplace_back(x, y, z, 1.0);
         }
         if (line[0] == 'f') {
-            // TODO: implement (lesson 3)
+            int v[3];
+            s >> junk >> v[0] >> v[1] >> v[2];
+            tris.emplace_back(verts[v[0] - 1], verts[v[1] - 1], verts[v[2] - 1], currentColor);
         }
         if (line[0] == 'g') {
-            // TODO: implement (lesson 3)
+            std::string matInfo;
+            s >> junk >> matInfo;
+
+            std::string colorName = matInfo.substr(matInfo.size() - 3, 3);
+            currentColor = maters[colorName];
         }
         if (line[0] == 'o') {
-            // TODO: implement (lesson 3)
+            if (!tris.empty()) {
+                objects.emplace_back(std::make_shared<Mesh>(ObjectNameTag(filename + "_temp_obj_" + std::to_string(objects.size())), tris));
+                tris.clear();
+            }
         }
     }
 
@@ -168,7 +183,7 @@ void ResourceManager::unloadTextures() {
     }
 
     int texturesCounter = _instance->_textures.size();
-    for (auto &_texture : _instance->_textures) {
+    for (auto& _texture : _instance->_textures) {
         _texture.second.reset();
     }
     _instance->_textures.clear();
@@ -182,13 +197,13 @@ void ResourceManager::unloadSoundBuffers() {
     }
 
     int soundBuffersCounter = _instance->_soundBuffers.size();
-    for (auto &_soundBuffer : _instance->_soundBuffers) {
+    for (auto& _soundBuffer : _instance->_soundBuffers) {
         _soundBuffer.second.reset();
     }
     _instance->_soundBuffers.clear();
 
     Log::log("ResourceManager::unloadSoundBuffers(): all " + std::to_string(soundBuffersCounter) +
-             " soundBuffers was unloaded");
+        " soundBuffers was unloaded");
 }
 
 void ResourceManager::unloadFonts() {
@@ -197,7 +212,7 @@ void ResourceManager::unloadFonts() {
     }
 
     int fontsCounter = _instance->_fonts.size();
-    for (auto &_font : _instance->_fonts) {
+    for (auto& _font : _instance->_fonts) {
         _font.second.reset();
     }
     _instance->_fonts.clear();
