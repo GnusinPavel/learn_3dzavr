@@ -50,7 +50,7 @@ Vec4D Vec4D::operator*(double number) const {
 }
 
 Vec4D Vec4D::operator/(double number) const {
-    if (number > Consts::EPS) {
+    if (std::abs(number) > Consts::EPS) {
         return Vec4D(x() / number, y() / number, z() / number, w() / number);
     }
     throw std::domain_error("Vec4D operator/(double): division by zero");

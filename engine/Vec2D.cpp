@@ -49,7 +49,7 @@ Vec2D Vec2D::operator*(double number) const {
 }
 
 Vec2D Vec2D::operator/(double number) const {
-    if (number > Consts::EPS) {
+    if (std::abs(number) > Consts::EPS) {
         return Vec2D(x() / number, y() / number);
     }
     throw std::domain_error{ "Vec2D::operator/(double): division by zero" };
