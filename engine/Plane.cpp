@@ -56,7 +56,7 @@ std::vector<Triangle> Plane::clip(const Triangle &tri) const {
 
     if (insidePoints.size() == 2) {
         auto intersect1 = intersection(insidePoints[0], outsidePoints[0]);
-        auto intersect2 = intersection(insidePoints[1], outsidePoints[1]);
+        auto intersect2 = intersection(insidePoints[1], outsidePoints[0]);
 
         result.emplace_back(
             insidePoints[0].makePoint4D(),

@@ -28,7 +28,7 @@ std::vector<Triangle> Camera::project(std::shared_ptr<Mesh> mesh) {
 
         Triangle modelTriangle = t * M;
 
-        double dot = modelTriangle.norm().dot(position() - Vec3D(modelTriangle[0]).normalized());
+        double dot = modelTriangle.norm().dot((position() - Vec3D(modelTriangle[0])).normalized());
         if (dot < 0) {
             continue;
         }
